@@ -1,0 +1,58 @@
+{% extends "base.html" %}
+
+{% block title %}F4BY - Inicio{% endblock %}
+
+{% block content %}
+<div class="hero-section text-center py-5 bg-light rounded">
+    <h1 class="display-4">Bienvenido a F4BY</h1>
+    <p class="lead">Tu mejor opción para rentar coches</p>
+    <a href="{{ url_for('cars') }}" class="btn btn-primary btn-lg">Ver Coches Disponibles</a>
+</div>
+
+<div class="features mt-5">
+    <div class="row">
+        <div class="col-md-4">
+            <div class="card mb-4">
+                <div class="card-body text-center">
+                    <h3>Millas F4BY</h3>
+                    <p>Acumula puntos con cada renta y obtén descuentos exclusivos</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="card mb-4">
+                <div class="card-body text-center">
+                    <h3>Descuento Caliente</h3>
+                    <p>Obtén grandes descuentos en rentas de última hora</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="card mb-4">
+                <div class="card-body text-center">
+                    <h3>Seguros Flexibles</h3>
+                    <p>Elige el seguro que mejor se adapte a tus necesidades</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="featured-cars mt-5">
+    <h2 class="text-center mb-4">Coches Destacados</h2>
+    <div class="row">
+        {% for car in cars[:3] %}
+        <div class="col-md-4">
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title">{{ car.brand }} {{ car.model }}</h5>
+                    <p class="card-text">Categoría: {{ car.category }}</p>
+                    <p class="card-text">Precio por hora: ${{ car.price_per_hour }}</p>
+                    <a href="{{ url_for('car_detail', car_id=car.id) }}" class="btn btn-primary">Ver Detalles</a>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+</div>
+{% endblock %} 

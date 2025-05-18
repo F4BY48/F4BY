@@ -1,0 +1,37 @@
+{% extends "base.html" %}
+
+{% block title %}F4BY - Mis Reservas{% endblock %}
+
+{% block content %}
+<div class="row">
+    <div class="col-12">
+        <h2 class="mb-4">Mis Reservas</h2>
+        
+        {% if rentals %}
+        <div class="list-group">
+            {% for rental in rentals %}
+            <div class="list-group-item">
+                <div class="d-flex w-100 justify-content-between">
+                    <h5 class="mb-1">{{ rental.car.brand }} {{ rental.car.model }}</h5>
+                    <span class="badge {% if rental.status == 'pending' %}bg-warning{% elif rental.status == 'active' %}bg-success{% else %}bg-secondary{% endif %}">
+                        {{ rental.status }}
+                    </span>
+                </div>
+                <p class="mb-1">
+                    <strong>Fecha de inicio:</strong> {{ rental.start_time.strftime('%Y-%m-%d %H:%M') }}<br>
+                    <strong>Fecha de fin:</strong> {{ rental.end_time.strftime('%Y-%m-%d %H:%M') }}<br>
+                    <strong>Seguro:</strong> {{ rental.insurance_type }}<br>
+                    <strong>Precio por hora:</strong> ${{ rental.car.price_per_hour }}
+                </p>
+                <small class="text-muted">Reserva creada el {{ rental.created_at.strftime('%Y-%m-%d %H:%M') }}</small>
+            </div>
+            {% endfor %}
+        </div>
+        {% else %}
+        <div class="alert alert-info">
+            No tienes reservas activas.
+        </div>
+        {% endif %}
+    </div>
+</div>
+{% endblock %} 

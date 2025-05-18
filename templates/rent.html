@@ -1,0 +1,85 @@
+{% extends "base.html" %}
+
+{% block title %}F4BY - Rentar {{ car.brand }} {{ car.model }}{% endblock %}
+
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-md-8">
+        <div class="card">
+            <div class="card-header">
+                <h3>Rentar {{ car.brand }} {{ car.model }}</h3>
+            </div>
+            <div class="card-body">
+                <form method="POST">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="mb-3">
+                                <label for="start_time" class="form-label">Fecha y Hora de Inicio</label>
+                                <input type="datetime-local" class="form-control" id="start_time" name="start_time" required>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="mb-3">
+                                <label for="end_time" class="form-label">Fecha y Hora de Fin</label>
+                                <input type="datetime-local" class="form-control" id="end_time" name="end_time" required>
+                            </div>
+                        </div>
+                    </div>
+
+                    <h4 class="mt-4">Opciones de Seguro</h4>
+                    <div class="list-group mb-4">
+                        <label class="list-group-item">
+                            <input class="form-check-input me-1" type="radio" name="insurance" value="basic" checked>
+                            Seguro Básico
+                            <small class="d-block text-muted">Cubre daños básicos al vehículo</small>
+                        </label>
+                        <label class="list-group-item">
+                            <input class="form-check-input me-1" type="radio" name="insurance" value="premium">
+                            Seguro Premium
+                            <small class="d-block text-muted">Cobertura completa incluyendo robo y daños a terceros</small>
+                        </label>
+                        <label class="list-group-item">
+                            <input class="form-check-input me-1" type="radio" name="insurance" value="luxury">
+                            Seguro Lujo
+                            <small class="d-block text-muted">Cobertura premium más asistencia 24/7 y vehículo de reemplazo</small>
+                        </label>
+                    </div>
+
+                    <div class="alert alert-info">
+                        <h5>Resumen de Costos</h5>
+                        <p id="cost-summary">Selecciona las fechas para ver el costo total</p>
+                    </div>
+
+                    <div class="d-grid gap-2">
+                        <button type="submit" class="btn btn-primary btn-lg">Confirmar Reserva</button>
+                        <a href="{{ url_for('car_detail', car_id=car.id) }}" class="btn btn-outline-secondary">Cancelar</a>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const startTimeInput = document.getElementById('start_time');
+    const endTimeInput = document.getElementById('end_time');
+    const costSummary = document.getElementById('cost-summary');
+    const pricePerHour = parseFloat('{{ car.price_per_hour }}');
+
+    function updateCostSummary() {
+        const startTime = new Date(startTimeInput.value);
+        const endTime = new Date(endTimeInput.value);
+        
+        if (startTime && endTime && startTime < endTime) {
+            const hours = (endTime - startTime) / (1000 * 60 * 60);
+            const baseCost = hours * pricePerHour;
+            costSummary.textContent = `Costo base: $${baseCost.toFixed(2)}`;
+        }
+    }
+
+    startTimeInput.addEventListener('change', updateCostSummary);
+    endTimeInput.addEventListener('change', updateCostSummary);
+});
+</script>
+{% endblock %} 

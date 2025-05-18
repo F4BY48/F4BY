@@ -1,0 +1,72 @@
+{% extends "base.html" %}
+
+{% block title %}F4BY - {{ car.brand }} {{ car.model }}{% endblock %}
+
+{% block content %}
+<div class="row">
+    <div class="col-md-6">
+        <div class="card">
+            <div class="card-body">
+                <h2 class="card-title">{{ car.brand }} {{ car.model }}</h2>
+                <p class="card-text">
+                    <strong>Categoría:</strong> {{ car.category }}<br>
+                    <strong>Precio por hora:</strong> ${{ car.price_per_hour }}<br>
+                    <strong>Estado:</strong> 
+                    {% if car.available %}
+                        <span class="badge bg-success">Disponible</span>
+                    {% else %}
+                        <span class="badge bg-danger">No Disponible</span>
+                    {% endif %}
+                </p>
+                
+                <h4 class="mt-4">Características</h4>
+                <ul class="list-group list-group-flush">
+                    <li class="list-group-item">Aire acondicionado</li>
+                    <li class="list-group-item">Bluetooth</li>
+                    <li class="list-group-item">GPS</li>
+                    <li class="list-group-item">Cámara de reversa</li>
+                </ul>
+
+                {% if car.available %}
+                <div class="mt-4">
+                    <a href="{{ url_for('rent_car', car_id=car.id) }}" class="btn btn-primary btn-lg">Rentar Ahora</a>
+                </div>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+
+    <div class="col-md-6">
+        <div class="card">
+            <div class="card-header">
+                <h4>Disponibilidad</h4>
+            </div>
+            <div class="card-body">
+                <div class="alert alert-info">
+                    <p><strong>Nota:</strong> Cada coche requiere 30 minutos de limpieza después de su uso.</p>
+                </div>
+                
+                <h5>Próximas reservas:</h5>
+                <div class="list-group">
+                    {% for rental in car.rentals %}
+                    <div class="list-group-item">
+                        <div class="d-flex w-100 justify-content-between">
+                            <h6 class="mb-1">Reserva #{{ rental.id }}</h6>
+                            <small>{{ rental.status }}</small>
+                        </div>
+                        <p class="mb-1">
+                            Inicio: {{ rental.start_time.strftime('%Y-%m-%d %H:%M') }}<br>
+                            Fin: {{ rental.end_time.strftime('%Y-%m-%d %H:%M') }}
+                        </p>
+                    </div>
+                    {% else %}
+                    <div class="list-group-item">
+                        <p class="mb-0">No hay reservas programadas</p>
+                    </div>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %} 
