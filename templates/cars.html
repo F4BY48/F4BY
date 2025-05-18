@@ -1,0 +1,63 @@
+{% extends "base.html" %}
+
+{% block title %}F4BY - Coches Disponibles{% endblock %}
+
+{% block content %}
+<div class="row">
+    <div class="col-md-3">
+        <div class="card">
+            <div class="card-header">
+                <h4>Filtros</h4>
+            </div>
+            <div class="card-body">
+                <form method="GET">
+                    <div class="mb-3">
+                        <label for="category" class="form-label">Categoría</label>
+                        <select class="form-select" id="category" name="category">
+                            <option value="">Todas las categorías</option>
+                            <option value="económico">Económico</option>
+                            <option value="compacto">Compacto</option>
+                            <option value="sedan">Sedán</option>
+                            <option value="suv">SUV</option>
+                            <option value="lujo">Lujo</option>
+                        </select>
+                    </div>
+                    <div class="mb-3">
+                        <label for="price_range" class="form-label">Rango de Precio</label>
+                        <select class="form-select" id="price_range" name="price_range">
+                            <option value="">Todos los precios</option>
+                            <option value="0-50">$0 - $50/hora</option>
+                            <option value="50-100">$50 - $100/hora</option>
+                            <option value="100+">$100+/hora</option>
+                        </select>
+                    </div>
+                    <div class="d-grid">
+                        <button type="submit" class="btn btn-primary">Aplicar Filtros</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+    
+    <div class="col-md-9">
+        <div class="row">
+            {% for car in cars %}
+            <div class="col-md-4 mb-4">
+                <div class="card h-100">
+                    <div class="card-body">
+                        <h5 class="card-title">{{ car.brand }} {{ car.model }}</h5>
+                        <p class="card-text">
+                            <strong>Categoría:</strong> {{ car.category }}<br>
+                            <strong>Precio:</strong> ${{ car.price_per_hour }}/hora
+                        </p>
+                        <div class="d-grid">
+                            <a href="{{ url_for('car_detail', car_id=car.id) }}" class="btn btn-primary">Ver Detalles</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+</div>
+{% endblock %} 
